@@ -1,4 +1,5 @@
-class transaction;
+class transaction; //class of test input set
+                   //this will be stored at mailbox
   randc bit [3:0] a;
   randc bit [3:0] b;
   bit [4:0] sum;
@@ -17,7 +18,7 @@ interface add_if;
 endinterface
 
 
-class monitor; 
+class monitor; //get input from tb, show them, put into mailbox
   mailbox #(transaction) mbx;
   transaction trans;
   virtual add_if aif;
@@ -42,7 +43,7 @@ class monitor;
 endclass
 
 
-class scoreboard;  
+class scoreboard; //check if output of dut is right and show score 
   mailbox #(transaction) mbx;
   transaction trans;
   
@@ -84,7 +85,7 @@ module tb;
   
   always #10 aif.clk <= ~aif.clk;
  
-  initial begin
+  initial begin //generate random input for test
     for(int i = 0; i < 20 ; i++) begin
       repeat(2) @(posedge aif.clk);
       aif.a <= $urandom_range(0,15);
@@ -92,7 +93,7 @@ module tb;
     end
   end
   
-  initial begin
+  initial begin //construct mailbox and pass ref of mbx to mon/sco
     mbx = new();
     mon = new(mbx);
     sco = new(mbx);
