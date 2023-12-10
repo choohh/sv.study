@@ -191,7 +191,12 @@ class environment;
 endclass
  
 /////////////////////////////////////////////////////
- 
+
+/*
+This is somewhat like main function in typical C code.
+tb contains dff, dff_if(interface) and env. dff communicates with env via dff_if.
+env contains every classes required for execution of test.
+*/
 module tb;
   dff_if vif(); // Create DUT interface
  
