@@ -1,3 +1,8 @@
+/*
+While other classes act as module that is responsible for specific step of test flow,
+"transaction" class is just a container (or packet) of input & output data and methods that copies them.
+All sets of input & output data are copied as a type of transaction and stored in target mailbox.
+*/
 class transaction;
   rand bit din;    // Define a random input bit "din"
   bit dout;        // Define an output bit "dout"
@@ -164,12 +169,13 @@ class environment;
   endtask
   
   task test();
-    fork
+    fork //fork allows multiple processes to be processed in parallel
       gen.run(); // Start generator
       drv.run(); // Start driver
       mon.run(); // Start monitor
       sco.run(); // Start scoreboard
-    join_any
+    join_any // drv.run, mon.run, sco.run never stops until post_test finishes whole simulation.
+             // this is why 'join_any' is used instead of instead of 'join'.
   endtask
   
   task post_test();
