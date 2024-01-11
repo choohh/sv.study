@@ -191,7 +191,8 @@ class scoreboard;
 endclass
  
 ///////////////////////////////////////////////////////
- 
+//Have one parent task : run
+//Have three child taks : pre_test, test, post_test
 class environment;
  
   generator gen;
@@ -203,7 +204,7 @@ class environment;
   event nextgs;
   virtual fifo_if fif;
   
-  function new(virtual fifo_if fif);
+  function new(virtual fifo_if fif); // constructor
     gdmbx = new();
     gen = new(gdmbx);
     drv = new(gdmbx);
@@ -263,8 +264,8 @@ module tb;
     
   initial begin
     env = new(fif);
-    env.gen.count = 10;
-    env.run();
+    env.gen.count = 10; //number of transaction that will be generated
+    env.run(); //this is all we need to analyze
   end
     
   initial begin
