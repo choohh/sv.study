@@ -191,8 +191,9 @@ class scoreboard;
 endclass
  
 ///////////////////////////////////////////////////////
-//Have one parent task : run
-//Have three child taks : pre_test, test, post_test
+// Have one parent task : run
+// Have three child taks : pre_test, test, post_test
+// pre_test resets the driver & post_test shows final score (errcount)
 class environment;
  
   generator gen;
