@@ -229,7 +229,10 @@ class environment;
       drv.run();
       mon.run();
       sco.run();
-    join_any
+    join_any 
+    // why join_any? : drv/mon/sco.run never stops. Only gen.run stops after [count] iterations.
+    // sco.run triggers event 'next' -> gen.run generates next input
+    // if gen.run is finsihed, it triggers event 'done' -> post_test is executed
   endtask
   
   task post_test();
@@ -270,7 +273,7 @@ module tb;
   end
     
   initial begin
-    $dumpfile("dump.vcd");
+    $dumpfile("dump.vcd"); //path designation of vcd (value change dump) file
     $dumpvars;
   end
    
