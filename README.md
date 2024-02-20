@@ -7,6 +7,6 @@ Materials :
 <br> https://www.udemy.com/course/systemverilog-for-verification-part-2-projects/
 <br>
 <br>(2) "UVM for Verification Part 1 : Fundamentals" by Kumar Khandagle (Udemy Lecture)
-<br> https://samsungu.udemy.com/course/uvm-for-verification-part-1-fundamentals/
+<br> https://www.udemy.com/course/uvm-for-verification-part-1-fundamentals/
 <br>
 <br>(3) https://wikidocs.net/170343
