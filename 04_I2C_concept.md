@@ -29,7 +29,7 @@
 | write_addr  | slave에게 데이터를 저장할 주소값 송신  | 
 | ack_1  | slave가 주소값 잘 받았는지 응답 확인  |
 | write_data  | ack_1 확인 후, slave에게<br> 그 주소에 저장할 데이터 송신 | 
-| read_data  | slave에게 주소를 보내고<br>그 주소에 저장된데이터 요청 |
+| read_data  | slave에게 주소를 보내고<br>그 주소에 저장된 데이터 요청 |
 | stop  | slave에게 통신 종료 알림 |
 | ack_2  | slave가 저장할 데이터 잘 받았는지 응답 확인   | 
 | master_ack  | slave에게 보내준 데이터 잘 받았다고 확인<br>이 확인은 I2C에서 NACK으로 하도록 규정됨  | 
@@ -38,14 +38,14 @@
 
 | State  | Description |
 |---|---|
-| idle  | 이무것도 안 하고 있는 상태  | 
+| idle  | 아무것도 안 하고 있는 상태  | 
 | read_addr  | Master가 보내준 주소 수신  |  
 | send_ack1  | Master에게 주소 잘 받았다고 신호 송신  | 
 | send_data  | Master에게 받은 주소에 해당하는 데이터 송신  |
 | master_ack  | Master가 데이터 잘 받았는지 응답 확인  | 
 | read_data | Master가 저장하라고 보낸 데이터 수신 |
 | send_ack2  | Master에게 데이터 잘 받았다고 신호 송신  |
-| wait_p  |  | start를 받는 기간인데
+| wait_p | start 감지한 직후 pulse cycle 시작까지 대기 |
 | detect_stop  | Master가 보내는 통신 종료 신호 확인  | 
 
 </td></tr> </table>
