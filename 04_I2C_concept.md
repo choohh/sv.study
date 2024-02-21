@@ -15,10 +15,6 @@
 <br>ack는 기본적으로 master가 slave에 뭔가 보냈을 때, slave가 "나 제대로 받았어!"라는 뜻에서 보내는 확인 신호이다.
 <br>04_I2C_dut.v에서 slave는 메모리이고, 따라서 메모리에 데이터를 저장할 때 먼저 주소를 보낸 후 데이터를 보내야 하는데,
 <br>주소를 보냈을 때 slave가 "잘 받았음!"이라고 하는게 ack_1, 그 다음으로 데이터를 보냈을 때 "잘 받았음!"이라고 하는게 ack_2인 것이다.
-
-- 그리고 04_I2C_dut에서는 사실 start와 stop 신호를 진짜로 detect하지 않는다.
-<br>그냥 그 사이클에서는 slave가 당연히 start 또는 stop이 들어온다고 생각하고 거기에 대응되는 작업을 하는데,
-<br>이 state가 start의 경우 p_wait, stop의 경우 detect_stop이다.
 　<table>
 <tr><th>Master 
 </th><th>Slave
