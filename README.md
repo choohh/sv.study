@@ -1,5 +1,5 @@
 # sv.study
-**System Verilog Study**<br><br>
+**SystemVerilog Study**<br><br>
 **Materials** : 
 <br>
 <br>(1) "SystemVerilog for Verification" by Kumar Khandagle (Udemy Lecture)
