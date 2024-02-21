@@ -1,6 +1,6 @@
 # sv.study
-System Verilog Study<br><br>
-Materials : 
+**System Verilog Study**<br><br>
+**Materials** : 
 <br>
 <br>(1) "SystemVerilog for Verification" by Kumar Khandagle (Udemy Lecture)
 <br> https://www.udemy.com/course/complete-systemverilog-for-rtl-verification-part-1/
