@@ -5,10 +5,11 @@
 - SCL은 Master가 보내는 clock 신호 (Only Master -> Slave),
 <br>SDA는 실제 데이터와 START, ACK 등 송수신 확인에 필요한 신호를 전송하는 버스 (Master -> Slave or Slave -> Master)
 
-- 그렇기 때문에 04_I2C_dut.v에서 module i2c_Master는 input으로 clk을 받고 output으로 scl을 내보내지만,
-<br>module i2c_Slave는 scl을 input으로 받는다.
-<br>다시 말해 master에서 scl과 sda에 어떤 값을 넣어주는지가 clk을 기준으로 결정된다. (정확히는 pulse)
-<br>하지만 slave에서는 sda에 어떤 값을 넣어주는지가 scl을 기준으로 결정된다.
+- ***(주의!!)*** 그렇기 때문에 원래는 master가 input으로 clk를 받고 output으로 scl을 내보내면 slave가 scl을 input으로 받아야 하지만,
+<br>04_I2C_dut.v에서는 start, stop 신호를 받을 때를 제외하고는 각자 clk으로부터 pulse를 생성해서 쓴다.
+<br>즉 실제 I2C 구성을 그대로 구현하지 않고, 동일한 clk을 master와 slave에 동시에 입력해서
+<br>원래 I2C 구성과 같은 결과가 나오도록 만들어 놓은 것 같다.
+<br>I2C 구현이 아니라 검증을 가르치는 것이 목적이기 때문에, 최대한 간단한 형태로 DUT를 구현하느라 이런 편법(?)을 쓴 것이 아닐까 싶다. 
 
 - Master와 Slave에서 각각 정의된 state의 종류는 아래와 같다. 두 모듈의 상태는 항상 아래의 9가지 중 하나이다.
 <br>대체로 다 직관적인데, ack_1과 ack_2의 차이가 헷갈릴 수 있다. 이 둘은 slave가 address를 받았느냐, data를 받았느냐에 따라 나뉜다.
