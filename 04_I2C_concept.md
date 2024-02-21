@@ -15,6 +15,10 @@
 <br>ack는 기본적으로 master가 slave에 뭔가 보냈을 때, slave가 "나 제대로 받았어!"라는 뜻에서 보내는 확인 신호이다.
 <br>04_I2C_dut.v에서 slave는 메모리이고, 따라서 메모리에 데이터를 저장할 때 먼저 주소를 보낸 후 데이터를 보내야 하는데,
 <br>주소를 보냈을 때 slave가 "잘 받았음!"이라고 하는게 ack_1, 그 다음으로 데이터를 보냈을 때 "잘 받았음!"이라고 하는게 ack_2인 것이다.
+
+- 그리고 04_I2C_dut에서는 사실 start와 stop 신호를 진짜로 detect하지 않는다.
+<br>그냥 그 사이클에서는 slave가 당연히 start 또는 stop이 들어온다고 생각하고 거기에 대응되는 작업을 하는데,
+<br>이 state가 start의 경우 p_wait, stop의 경우 detect_stop이다.
 　<table>
 <tr><th>Master 
 </th><th>Slave
@@ -23,28 +27,28 @@
 
 | State  | Description |
 |---|---|
-| idle  | Content Cell  | 
-| start  | Content Cell  |  
-| write_addr  | Content Cell  | 
-| ack_1  | Content Cell  |
-| write_data  | Content Cell  | 
-| read_data  | Content Cell  |
-| stop  | Content Cell  |
-| ack_2  | Content Cell  | 
-| master_ack  | Content Cell  | 
+| idle  | 아무것도 안 하고 있는 상태 | 
+| start  | slave에게 통신 시작 알림 |  
+| write_addr  | slave에게 데이터를 저장할 주소값 송신  | 
+| ack_1  | slave가 주소값 잘 받았는지 응답 확인  |
+| write_data  | ack_1 확인 후, slave에게<br> 그 주소에 저장할 데이터 송신 | 
+| read_data  | slave에게 주소를 보내고<br>그 주소에 저장된데이터 요청 |
+| stop  | slave에게 통신 종료 알림 |
+| ack_2  | slave가 저장할 데이터 잘 받았는지 응답 확인   | 
+| master_ack  | slave에게 보내준 데이터 잘 받았다고 확인<br>이 확인은 I2C에서 NACK으로 하도록 규정됨  | 
 
 </td><td>
 
 | State  | Description |
 |---|---|
-| idle  | Content Cell  | 
-| read_addr  | Content Cell  |  
-| send_ack1  | Content Cell  | 
-| send_data  | Content Cell  |
-| master_ack  | Content Cell  | 
-| read_data | Content Cell  |
-| send_ack2  | Content Cell  |
-| wait_p  | Content Cell  | 
-| detect_stop  | Content Cell  | 
+| idle  | 이무것도 안 하고 있는 상태  | 
+| read_addr  | Master가 보내준 주소 수신  |  
+| send_ack1  | Master에게 주소 잘 받았다고 신호 송신  | 
+| send_data  | Master에게 받은 주소에 해당하는 데이터 송신  |
+| master_ack  | Master가 데이터 잘 받았는지 응답 확인  | 
+| read_data | Master가 저장하라고 보낸 데이터 수신 |
+| send_ack2  | Master에게 데이터 잘 받았다고 신호 송신  |
+| wait_p  |  | start를 받는 기간인데
+| detect_stop  | Master가 보내는 통신 종료 신호 확인  | 
 
 </td></tr> </table>
