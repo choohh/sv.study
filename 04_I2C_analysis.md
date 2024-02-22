@@ -51,3 +51,7 @@
 | detect_stop  | Master가 보내는 통신 종료 신호 확인  | 
 
 </td></tr> </table>
+
+## 2. 04_I2C_tb.sv
+master는 딱 두 가지 동작만을 실시한다: write와 read.
+constraint randomization을 통해 address와 
