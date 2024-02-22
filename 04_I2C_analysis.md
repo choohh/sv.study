@@ -53,5 +53,8 @@
 </td></tr> </table>
 
 ## 2. 04_I2C_tb.sv
-master는 딱 두 가지 동작만을 실시한다: write와 read.
-constraint randomization을 통해 address와 
+- master는 딱 두 가지 동작만을 실시한다: write와 read.
+constraint randomization을 통해 address와 data를 
+
+- tb_top과 dut는 기본적으로 newd와 i2c_if.done을 통해 소통한다.
+<br>tb_top은 newd를 1로 올림으로서 새로운 명령을 내린다는 것을 알려주고,
