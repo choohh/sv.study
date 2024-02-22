@@ -133,64 +133,8 @@ class driver;
   
 endclass
  
- 
- 
-/////////////////////////////////////
- 
- 
-/* module tb;
-   
-  generator gen;
-  driver drv;
-  event next;
-  event done;
-  
-  mailbox #(transaction) mbxgd;
-  
-  i2c_if vif();
-  i2c_top dut (vif.clk, vif.rst,  vif.newd, vif.wr, vif.wdata, vif.addr, vif.rdata, vif.done);
- 
-  initial begin
-    vif.clk <= 0;
-  end
-  
-  always #5 vif.clk <= ~vif.clk;
-  
-  initial begin
- 
-    mbxgd = new();
-    gen = new(mbxgd);
-    drv = new(mbxgd);
-    gen.count = 10;
-    drv.vif = vif;
-    
-    drv.drvnext = next;
-    gen.drvnext = next;
-    
-  end
-  
-  initial begin
-    fork
-      drv.reset();
-      gen.run();
-      drv.run();
-    join_none  
-    wait(gen.done.triggered);
-    $finish();
-  end
-   
-  initial begin
-    $dumpfile("dump.vcd");
-    $dumpvars;   
-  end
- 
-   assign vif.sclk_ref = dut.e1.sclk_ref;
-   
-  
-endmodule
- 
-*/
- 
+
+
 //////////////////////////////////////monitor
  
  
@@ -200,15 +144,10 @@ class monitor;
   transaction tr;
   mailbox #(transaction) mbxms;
  
- 
-  
- 
-  
   function new( mailbox #(transaction) mbxms );
     this.mbxms = mbxms;
   endfunction
-  
-  
+
   task run();
     
     tr = new();
@@ -286,7 +225,6 @@ class scoreboard;
   
   
 endclass
- 
  
  
  
