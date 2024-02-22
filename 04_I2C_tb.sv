@@ -14,7 +14,7 @@ class transaction;
   
   
   constraint rd_wr_c {
-    op dist {1 :/ 50 ,  0 :/ 50};
+    op dist {1 :/ 50 ,  0 :/ 50}; // dist { value1 :/ weight1, value2 :/ weight2, ..} 
   }
   
   
