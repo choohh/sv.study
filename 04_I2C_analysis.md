@@ -69,4 +69,11 @@
 
 - driver와 monitor는 vif를 통해 dut와 소통한다. 이 때 class 내부에서는 virtual interface를 선언하고,
 <br>module tb에서 선언된 i2c_if vif와 연결된다.
-<br>(참고 : https://verificationguide.com/systemverilog/systemverilog-virtual-interface/) 
+<br>(참고 : https://verificationguide.com/systemverilog/systemverilog-virtual-interface/)
+
+- scoreboard는 read를 할 때만 match 여부를 확인한다.
+<br>내부에 mem이라는 배열이 있고, write를 했을 때는 mailbox를 통해 받은 tr에서 tr.addr과 tr.din을 통해 쓴 값을 저장한다.
+<br>read를 했을 때는 mailbox를 통해 받은 tr에서 tr.dout과 내부 mem에서 tr.addr에 해당하는 값을 비교해 match 여부를 보여준다.
+<br>중요한 것은 transaction에 필요한 모든 정보가 포함되어 있어야 한다는 점이다.
+<br>scoreboard는 mailbox를 통하지 않고는 다른 class instance들과 소통하지 않는다. 이는 최대한 간결한 구현을 위해서인 것 같다.
+<br>만약 scoreboard가 mbxms 외에도 다른 입출력 채널이 있었다면, 코드 분석이나 디버깅이 훨씬 복잡해졌을 것이다.  
