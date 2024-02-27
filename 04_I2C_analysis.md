@@ -18,7 +18,7 @@
 <br>ack는 기본적으로 master가 slave에 뭔가 보냈을 때, slave가 "나 제대로 받았어!"라는 뜻에서 보내는 확인 신호이다.
 <br>04_I2C_dut.v에서 slave는 메모리이고, 따라서 메모리에 데이터를 저장할 때 먼저 주소를 보낸 후 데이터를 보내야 하는데,
 <br>주소를 보냈을 때 slave가 "잘 받았음!"이라고 하는게 ack_1, 그 다음으로 데이터를 보냈을 때 "잘 받았음!"이라고 하는게 ack_2인 것이다.
-　<table>
+<table>
 <tr><th>Master 
 </th><th>Slave
 </th></tr>
@@ -53,8 +53,20 @@
 </td></tr> </table>
 
 ## 2. 04_I2C_tb.sv
+
 - master는 딱 두 가지 동작만을 실시한다: write와 read.
-constraint randomization을 통해 address와 data를 
+<br>constraint randomization을 통해 address와 data를 각각 [2, 4], [2, 8]로 제한하고, write와 read의 비중을 50:50으로 둔다.
+<br>이는 사실 실제로 구현해야 하는 TB에 비해 단순화된 형태로, 04_I2C_dut.v에서 addr는 7비트, data는 8비트까지 쓸 수 있는데
+<br>04_I2C_tb.sv에서는 3비트만 쓰고 있기 때문이다.
 
 - tb_top과 dut는 기본적으로 newd와 i2c_if.done을 통해 소통한다.
-<br>tb_top은 newd를 1로 올림으로서 새로운 명령을 내린다는 것을 알려주고,
+<br>tb_top은 newd를 1로 올림으로서 새로운 명령을 내린다는 것을 알려주고, dut는 idle 상태에 있다가 newd가 1이 되는 것을 감지하면
+<br>바로 write 또는 read를 위한 작업을 하기 위해 상태를 변환한다.
+
+- 이미 살펴본 다른 코드와 마찬가지로, 각 class의 instance가 데이터를 주고 받는 것은 mailbox를 통해 이루어진다.
+<br> mailbox에 담기는 데이터 구조는 class transaction이다.
+<br> generator가 driver에게 데이터를 전달할 때는 mbxgd, monitor가 scoreboard에게 데이터를 전달할 때는 mbxms가 사용된다.
+
+- driver와 monitor는 vif를 통해 dut와 소통한다. 이 때 class 내부에서는 virtual interface를 선언하고,
+<br>module tb에서 선언된 i2c_if vif와 연결된다.
+<br>(참고 : https://verificationguide.com/systemverilog/systemverilog-virtual-interface/) 
