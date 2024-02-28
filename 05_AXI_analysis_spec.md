@@ -83,7 +83,7 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 
 ## 3. 예시 Timing Diagram 살펴보기 
 아래 두 예시 Timing Diagram은 각각 read burst와 write burst를 나타낸 것이다.
-<br>비록 모든 signal을 다 표시하지는 않았지만, (1)기본적으로 handshake가 어떻게 이뤄지는지 (2)burst가 어떻게 이뤄지는지 살펴볼 수 있다.<br>
+<br>비록 모든 signal을 다 표시하지는 않았지만, (1)기본적으로 handshake가 어떻게 이뤄지는지 (2)burst가 어떻게 이뤄지는지 살펴볼 수 있다.<br><br>
 <img src = "./image/axiread.jpg"><br>
 ARADDR과 ARVALID는 T1에 이미 준비되어 있고, T2에서 ARREADY가 HIGH로 변하면서 handshake 조건이 만족된다.
 <br>따라서 T2에 바로 ADDR는 slave에게 전달된다.
