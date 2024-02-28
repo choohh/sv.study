@@ -21,8 +21,8 @@ ARM에서 정의한 On-chip bus protocol들을 AMBA(Advanced Microcontroller Bus
 ## 2. 단계별 작동 원리
 
 ### 2-1. Handshake
-Handshake는 별도의 채널이나 signal이 아니라, 모든 채널에서 데이터 전송을 시작하기 전에 반드시 거쳐야 하는 단계이다.
-<br>모든 전송은 Handshake를 한 후에 시작된다. Handshake란 source와 destination이 각각 데이터를 보낼 준비, 받을 준비가 되었다고 
+Handshake는 별도의 채널이나 signal이 아니라, 모든 채널에서 데이터 전송을 시작하기 위해 반드시 만족해야 하는 일종의 조건이다.
+<br>모든 전송은 Handshake가 된 상태에서 진행된다. Handshake란 source와 destination이 각각 데이터를 보낼 준비, 받을 준비가 되었다고 
 <br>서로 확인해주는 단계이다. 이 때 source와 destination은 (master, slave) 쌍일 수도 있고 (slave, master) 쌍일 수도 있다.
 <br>Handshake는 READY, VALID 두 개의 signal을 통해 이루어진다.
 <br>Source는 데이터가 준비되어 해당 signal로 입력할 때 VALID도 HIGH로 바꿔준다. Dest.는 받을 수 있으면 READY를 HIGH로 바꿔준다.
