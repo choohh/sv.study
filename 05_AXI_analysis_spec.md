@@ -32,7 +32,7 @@ Handshake는 별도의 채널이나 signal이 아니라, 모든 채널에서 데
 <br>아래 그림에서 A->>B는 A가 반드시 B보다 앞서야 한다는 뜻이고(must), A->B는 앞서도 된다는 뜻이다(can).
 <br>가령 Figure A3.6에서 RVALID(slave)는 반드시 ARVALID(master)와 ARREADY(slave)가 HIGH가 되기를 기다려야 하는데,
 <br>이는 read request가 끝나야 데이터를 꺼내올 주소를 알게 되고, 그래야만 데이터를 준비하고 RVALID를 HIGH로 바꿀 수 있기 때문이다.
-<br><img src="./image/handshake.jpg">
+<br><img src="./image/handshake_order.jpg">
 
 ### 2-2. Read/Write Request
 Request 채널의 핵심은 크게 다음 네 가지이다. **AxLEN, AxSIZE, AxADDR, AxBURST**. (x에는 R 또는 W가 들어간다.)
@@ -82,5 +82,15 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 <br><br>
 
 ## 3. 예시 Timing Diagram 살펴보기 
-<img src = "./image/axiread.jpg">
+아래 두 예시 Timing Diagram은 각각 read burst와 write burst를 나타낸 것이다.
+<br>비록 모든 signal을 다 표시하지는 않았지만, (1)기본적으로 handshake가 어떻게 이뤄지는지 (2)burst가 어떻게 이뤄지는지 살펴볼 수 있다. 
+<img src = "./image/axiread.jpg"><br>
+ARADDR과 ARVALID는 T1에 이미 준비되어 있고, T2에서 ARREADY가 HIGH로 변하면서 handshake 조건이 만족된다.
+<br>따라서 T2에 바로 ADDR는 slave에게 전달된다.
+<br>이후 master는 바로 RREADY를 HIGH로 바꿔 T4부터 데이터를 받을 준비가 되었음을 알린다.
+<br>slave는 T5-T6 사이에 DATA를 준비하는 동시에 RVALID를 HIGH로 올리고,
+<br>T6에서 handshake 조건이 만족되므로 첫 번쨰 DATA를 master로 전달하게 된다.
+<br>마찬가지로 T9, T10, T13에서 handshake와 동시에 두번쨰, 세번쨰, 네번째 DATA를 master로 전달하고,
+<br>T13에서는 이것이 burst의 마지막 전송이라는 것을 알리기 위해 slave가 RLAST도 HIGH로 바꾼다.
+<br>
 <br><img src = "./image/axiwrite.png">
