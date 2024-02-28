@@ -32,6 +32,7 @@ Handshake는 별도의 채널이나 signal이 아니라, 모든 채널에서 데
 <br>아래 그림에서 A->>B는 A가 반드시 B보다 앞서야 한다는 뜻이고(must), A->B는 앞서도 된다는 뜻이다(can).
 <br>가령 Figure A3.6에서 RVALID(slave)는 반드시 ARVALID(master)와 ARREADY(slave)가 HIGH가 되기를 기다려야 하는데,
 <br>이는 read request가 끝나야 데이터를 꺼내올 주소를 알게 되고, 그래야만 데이터를 준비하고 RVALID를 HIGH로 바꿀 수 있기 때문이다.
+<br><img src="./image/handshake.jpg">
 
 ### 2-2. Read/Write Request
 Request 채널의 핵심은 크게 다음 네 가지이다. **AxLEN, AxSIZE, AxADDR, AxBURST**. (x에는 R 또는 W가 들어간다.)
