@@ -83,7 +83,7 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 
 ## 3. 예시 Timing Diagram 살펴보기 
 아래 두 예시 Timing Diagram은 각각 read burst와 write burst를 나타낸 것이다.
-<br>비록 모든 signal을 다 표시하지는 않았지만, (1)기본적으로 handshake가 어떻게 이뤄지는지 (2)burst가 어떻게 이뤄지는지 살펴볼 수 있다. 
+<br>비록 모든 signal을 다 표시하지는 않았지만, (1)기본적으로 handshake가 어떻게 이뤄지는지 (2)burst가 어떻게 이뤄지는지 살펴볼 수 있다.<br>
 <img src = "./image/axiread.jpg"><br>
 ARADDR과 ARVALID는 T1에 이미 준비되어 있고, T2에서 ARREADY가 HIGH로 변하면서 handshake 조건이 만족된다.
 <br>따라서 T2에 바로 ADDR는 slave에게 전달된다.
@@ -93,4 +93,10 @@ ARADDR과 ARVALID는 T1에 이미 준비되어 있고, T2에서 ARREADY가 HIGH�
 <br>마찬가지로 T9, T10, T13에서 handshake와 동시에 두번쨰, 세번쨰, 네번째 DATA를 master로 전달하고,
 <br>T13에서는 이것이 burst의 마지막 전송이라는 것을 알리기 위해 slave가 RLAST도 HIGH로 바꾼다.
 <br>
-<br><img src = "./image/axiwrite.png">
+<br><img src = "./image/axiwrite.png"><br>
+read burst와 마찬가지로 T2에서 request handshake가 발생하며 ADDR가 slave로 전달된다.
+<br>T4, T6, T8, T9에서 각각 1, 2, 3, 4번째 DATA가 slave로 전달된다.
+<br>master는 T8-T9 사이에 WLAST를 HIGH로 바꿈으로써 T9에서의 전달이 burst의 마지막임을 알린다.
+<br>master는 첫 전송인 T4 이전부터 BREADY를 HIGH로 바꿔 놓는다.
+<br>이를 통해 언제 전송이 끝날지는 모르지만 언제든 끝난다면 RESP를 받을 수 있도록 준비한다.
+<br>실제 RESP는 T10에 slave가 BVALID를 HIGH로 바꿔 handshake가 이뤄짐과 동시에 master로 전달된다.
