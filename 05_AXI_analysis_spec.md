@@ -82,4 +82,5 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 <br><br>
 
 ## 3. 예시 Timing Diagram 살펴보기 
-https://www.allaboutcircuits.com/technical-articles/what-are-axi-interconnects-tutorial-master-slave-digital-logic/
+<img src = "./image/axiread.jpg">
+<br><img src = "./image/axiwrite.png">
