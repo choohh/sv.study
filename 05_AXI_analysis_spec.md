@@ -78,4 +78,7 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 <br>xRESP는 디폴트값 외에 6개의 옵션을 추가로 가지며, 이 중 하나만 EXOKAY(Exclusive Read/Write Succeded)로 성공을 의미하고
 <br>나머지 5개는 다 어떤 이유로 실패했는지를 의미한다.
 <br>(Exclusive Access 관련 참고 : https://electronic-hwan.tistory.com/entry/AMBA-Bus-AMBA-AXI-Write-Response-Channel)
+<br><br>
 
+## 3. 예시 Timing Diagram 살펴보기 
+https://www.allaboutcircuits.com/technical-articles/what-are-axi-interconnects-tutorial-master-slave-digital-logic/
