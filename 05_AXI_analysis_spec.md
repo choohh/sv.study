@@ -21,10 +21,36 @@
 <br>Handshake는 READY, VALID 두 개의 signal을 통해 이루어진다.
 <br>Source는 데이터가 준비되어 해당 signal로 입력할 때 VALID도 HIGH로 바꿔준다. Dest.는 받을 수 있으면 READY를 HIGH로 바꿔준다.
 <br>VALID와 READY가 모두 HIGH일 때만 데이터가 수신된다.
-<br>이 때 READY와 VALID 둘 중에 무엇이 앞서도 상관 없다. (FIG A3.2, 3.3, 3.4)
 <br>
+<br>이 때 READY와 VALID 중 무엇이 앞서야 하는지는 경우에 따라 다르다. 일부 예시가 Figure A3.5, A3.6에 규정되어 있다.
+<br>아래 그림에서 A->>B는 A가 반드시 B보다 앞서야 한다는 뜻이고(must), A->B는 앞서도 된다는 뜻이다(can).
+<br>가령 Figure A3.6에서 RVALID(slave)는 반드시 ARVALID(master)와 ARREADY(slave)가 HIGH가 되기를 기다려야 하는데,
+<br>이는 read request가 끝나야 데이터를 꺼내올 주소를 알게 되고, 그래야만 데이터를 준비하고 RVALID를 HIGH로 바꿀 수 있기 때문이다.
 
-### 2-1. Read
+### 2-1. Read/Write Request
+Request 채널의 핵심은 크게 다음 네 가지이다. **AxLEN, AxSIZE, AxADDR, AxBURST**. (x에는 R 또는 W가 들어간다.)
+<br>LEN은 한 사이클에 전송하는 데이터의 최대 크기[Byte], SIZE는 그걸 몇 번 보낼건지, ADDR는 첫 전송에 사용할 주소, 
+<br>BURST는 그 다음 전송부터 주소를 어떻게 바꿀 건지에 대한 정책이다.
+<br>다른건 다 직관적인데 burst가 조금 헷갈릴 수 있다. burst는 말 그대로 한번에 데이터를 연속해서 쓰거나 읽어오겠다는 뜻이다.
+<br>
+<br>burst 옵션으로는 fixed, incr, wrap이 있다.
+<br>fixed는 그냥 같은 주소를 계속 쓴다는 뜻으로, FIFO 메모리 등에 데이터를 넣거나 가져올 때 쓰인다.
+<br>incr은 매 전송마다 주소를 계속 증가시킨다는 뜻으로, 얼마나 증가할지는 LEN에 따라 결정된다. 이 옵션이 디폴트다.
+<br>wrap은 "wrap boundary" = (INT(Start_Address/(SIZE\*LEN))) \* (SIZE*LEN) 를 설정하고, 
+<br>N번째 start addr.가 wrap boundary + (SIZE\*LEN)이 되면 start addr.를 wrap boundary로 내려주는 방식이다.
+<br>즉 주소의 하한선과 상한선을 정해두고 그 안에서 incr 모드처럼 작동하다가 상한선에 도달하면 하한선으로 이동하는 방식이다. 
+<br>(참고 : https://stepintoverification.blogspot.com/2019/04/wrapping-burst-in-axi.html)
+<br>
+<br>이 모든 것을 slave가 잘 받고 AxREADY 신호를 보내면 다음 단계인 Read/Write로 넘어가게 된다.
 
-
-### 2-2. Write
+### 2-2. Read/Write
+READ/WRITE 채널의 핵심은 크게 다음 네 가지이다. **xDATA, xSTRB, xLAST**. (x에는 R 또는 W가 들어간다.)
+<br>DATA는 말그대로 송신/수신할 데이터를 위한 signal이다. 
+<br>STRB는 strobe의 약어로, 바이트 단위로 write/read 동작을 끌 수 있는 기능이다.
+<br>디폴트로는 당연히 모든 바이트 값을 그대로 읽거나 쓸 수 있도록 허용하고 있다.
+<br>만약 특정 바이트만 읽기, 쓰기 동작시 제외하고 싶다면 STRB에서 해당 순서의 비트를 LOW로 바꿔주면 된다.
+<br>
+<br>
+<br>
+<br>
+<br>
