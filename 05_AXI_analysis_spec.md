@@ -7,7 +7,8 @@
 
 ARM에서 정의한 On-chip bus protocol들을 AMBA(Advanced Microcontroller Bus Architecture)라고 한다.
 <br>AMBA에는 APB, AHB, AXI 등이 있는데 뒤로 갈수록 더 빨라진다. AMBA 프로토콜 중 가장 속도가 빠른 것이 AXI이다.
-<br>이는 
+<br>이는 Burst read/write 지원, ID 도입을 통한 out-of-order 실행 지원, channel과 register slice 도입을 통한 freq. 고속화 등에 기인한다. 
+<br>(참고 : https://www.linkedin.com/pulse/difference-between-axi-ahb-complete-guide-sougata-bhattacharjee)
 <br>
 <br>AXI는 _기본적으로_ 5개의 독립적인 channel로 구성되고, 각 채널은 다시 여러 개의(꽤 많은..) signal로 구성된다.
 <br>이 5개의 채널은 **write request(AW), write data(W), write response(B), read request(AR), read data(R)** 이다.
@@ -63,7 +64,13 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 
 ### 2-4. Response
 일단 read의 경우 별도의 read response 채널이 없다. response에 필요한 signal들은 모두 read 채널 안에 포함되어 있다.
-<br>write에서만 response signal들을 별도의 채널로 분리한 이유는 
+<br>write에서만 response signal들을 별도의 채널로 분리한 이유는 register slice를 사용하기 위해서이다.
+<br>고속 bus에서는 도선의 길이가 길어질수록 각 도선의 도착 타이밍을 맞추기 힘들다. (즉 싱크 맞추는게 어렵다.) 
+<br>그렇기 때문에 master로부터 상대적으로 먼 slave에 접근할 때는 중간에 register slice를 넣어서 1 클럭 사이클을 더 쓰고 싱크를 맞춰주는
+<br>작업을 할 수 있는데, 이는 채널을 구성하는 도선들의 방향이 모두 같을 때 훨씬 물리적으로 구현하기 쉽다.
+<br>따라서 같은 채널 안의 signal들은 보통 handshake에 쓰이는 READY를 빼놓고는 모두 같은 방향을 가지는데, 이 때문에
+<br>이 때문에 read와 방향이 같은 read response signal들은 read 안에 포함시키고, write와 방향이 다른 write response signal들은
+<br>별도의 채널로 분리한 것으로 추정된다. (참고 : https://blog.naver.com/esoclab/20174607608)
 <br>
 <br>response의 핵심은 write의 경우 BRESP, read의 경우 RRESP signal인데, 사실 둘 다 필수는 아니다.
 <br>xRESP_WIDTH=0으로 설정하면 둘 다 디폴트로 유지되며, 디폴트는 000(OKAY)이다. 
@@ -72,5 +79,3 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 <br>나머지 5개는 다 어떤 이유로 실패했는지를 의미한다.
 <br>(Exclusive Access 관련 참고 : https://electronic-hwan.tistory.com/entry/AMBA-Bus-AMBA-AXI-Write-Response-Channel)
 
-<br><br><br>------------------------------ 참고 ---------------------------------
-<br> https://blog.naver.com/esoclab/20174607608
