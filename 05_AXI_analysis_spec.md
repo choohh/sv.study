@@ -67,7 +67,7 @@ READ/WRITE 채널의 핵심은 크게 다음 세 가지이다. **xDATA, xSTRB, x
 <br>write에서만 response signal들을 별도의 채널로 분리한 이유는 register slice를 사용하기 위해서이다.
 <br>고속 bus에서는 도선의 길이가 길어질수록 각 도선의 도착 타이밍을 맞추기 힘들다. (즉 싱크 맞추는게 어렵다.) 
 <br>그렇기 때문에 master로부터 상대적으로 먼 slave에 접근할 때는 중간에 register slice를 넣어서 1 클럭 사이클을 더 쓰고 싱크를 맞춰주는
-<br>작업을 할 수 있는데, 이는 채널을 구성하는 도선들의 방향이 모두 같을 때 훨씬 물리적으로 구현하기 쉽다.
+<br>방법을 쓸 수 있는데, 이는 채널을 구성하는 도선들의 방향이 모두 같을 때 훨씬 물리적으로 구현하기 쉽다.
 <br>따라서 같은 채널 안의 signal들은 보통 handshake에 쓰이는 READY를 빼놓고는 모두 같은 방향을 가지는데, 이 때문에
 <br>이 때문에 read와 방향이 같은 read response signal들은 read 안에 포함시키고, write와 방향이 다른 write response signal들은
 <br>별도의 채널로 분리한 것으로 추정된다. (참고 : https://blog.naver.com/esoclab/20174607608)
