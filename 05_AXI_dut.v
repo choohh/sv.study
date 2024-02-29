@@ -167,7 +167,8 @@ module axi_slave(
  
  ///////////////////////////function to compute next address during FIXED burst type 
     function bit[31:0] data_wr_fixed (input [3:0] wstrb, input [31:0] awaddrt);
-    unique case (wstrb)
+    unique case (wstrb) //"unique" means that each cases are exclusive.
+			//This shows warning when two cases have same expression.	    		
       4'b0001: begin 
         mem[awaddrt] = wdatat[7:0];
       end
