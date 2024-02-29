@@ -19,7 +19,7 @@
 
 |State|Description|
 |-----|------|
-| awidle |  |
+| awidle | 아무것도 안 하고 있는 상태 |
 | awstart|  |
 | awreadys | |
 
