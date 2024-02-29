@@ -125,7 +125,9 @@ module axi_slave(
     end
   
   /////////////fsm for write address channel
-  always_comb
+  always_comb //In SystemVerilog, always was divided into 3 types : always_ff, always_comb, always_latch.  
+	      //always_comb means everything in this block is combinational logic.
+	      //We should be careful not to put any sequential logic in this block.
     begin
       case(awstate)
       awidle:
@@ -180,18 +182,18 @@ module axi_slave(
       end
       
        4'b0100: begin 
-         mem[awaddrt] = wdatat[23:16];
+        mem[awaddrt] = wdatat[23:16];
       end
       
        4'b0101: begin 
         mem[awaddrt] = wdatat[7:0];
-         mem[awaddrt + 1] = wdatat[23:16];
+        mem[awaddrt + 1] = wdatat[23:16];
       end
       
       
        4'b0110: begin 
         mem[awaddrt] = wdatat[15:8];
-         mem[awaddrt + 1] = wdatat[23:16];
+        mem[awaddrt + 1] = wdatat[23:16];
       end
       
        4'b0111: begin 
