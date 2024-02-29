@@ -1,6 +1,14 @@
 # AXI 코드 분석
-## 1. 04_I2C_dut.v
-- 기본적으로 5개의 채널(write request, write, write response, read request, read)에 대해 각각 FSM을 구현해놓은 형태이다.<br>
-dd
+## 1. 05_AXI_dut.v
+- 04_I2C_dut.v와 달리 05_AXI_dut.v는 slave만을 구현해놨다.
+즉 master와 slave로 구성된 AXI 시스템을 검증하는 것이 아니라, AXI를 통해 master와 통신하는 slave를 검증하는 프로젝트이다.<br>
+기본적으로 5개의 채널(write request, write, write response, read request, read)에 대해 각각 FSM이 구현되어 있다.<br>
+- 각 채널에 대한 FSM에 존재하는 state 목록은 다음과 같다.<br>
 
-- m
+|Channel|State of FSM|
+|-----|------|
+| write request | awidle, awstart, awreadys |
+| write | widle, wstart, wreadys, wvalids, waddr_dec |
+| write response ||
+| read ||
+|read response||
