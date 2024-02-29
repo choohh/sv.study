@@ -1,5 +1,6 @@
 //If always uses two argument divided by comma, 
 //does it mean block will be executed when one of arguments is satisfied?
+// --> YES. comma(,) is same with "or"
 `timescale 1ns / 100ps
 
 module test;
