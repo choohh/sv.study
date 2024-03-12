@@ -23,7 +23,7 @@
 |-----|------|
 | awidle | awready를 LOW로 낮추고 기다린다. 바로 다음 사이클에 awstart로 넘어간다.<br>즉 이 상태는 idle이라기보다는 init에 더 가깝다. |
 | awstart| master가 awvalid를 HIGH로 바꾸고 대기중인 상태라면 addr을 받는다.  |
-| awreadys | awready를 HIGH로 올리고 다음 clk posedge에 idle로 돌아간다. <br>사실 원래 ready가 먼저 HIGH로 올라가고 그것이 Trigger가 돼서 addr을 받아야 하는데,<br>이 코드에서는 순서가 바뀌어 있다.|
+| awreadys | awready를 HIGH로 올리고 다음 clk posedge에 idle로 돌아간다. |
 
 - **write**<br>
 write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_wrap이라는 function 3개가 있다.
@@ -32,7 +32,7 @@ write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_
 |State|Description|
 |-----|------|
 | widle | wready를 LOW로 낮추고 기다린다. 바로 다음 사이클에 wstart로 넘어간다.<br>즉 이 상태는 idle이라기보다는 init에 더 가깝다. |
-| wstart| master가 wvalid를 HIGH로 바꾸고 대기중인 상태라면 wdata를 받는다.<br>nextaddr을 받기 위해 waddr_dec 상태로 넘어간다. <br>위와 마찬가지로 ready가 먼저 HIGH로 올라가고 그것이 Trigger가 돼서 data을 받아야 하는데,<br>이 코드에서는 순서가 바뀌어서 메모리에 data를 씀과 동시에 ready를 HIGH로 올린다.|
+| wstart| master가 wvalid를 HIGH로 바꾸고 대기중인 상태라면 wdata를 받는다.<br>nextaddr을 받기 위해 waddr_dec 상태로 넘어간다.|
 |waddr_dec| write request 이후 첫 전송이라면 first=0이라 nextaddr로 addr을 그대로 쓰고, <br>아니라면 nextaddr로 계산해놓은 retaddr을 쓴다. <br>이 retaddr은 wreadys 상태에서 미리 선언된 data_wr_* 함수를 통해 계산된다.|
 | wreadys | data_wr_*을 통해 mem의 해당 주소 공간에 받은 wdata를 쓴다. 동시에 (늦었지만) ready를 HIGH로 올린다. |
 |wvalids| wlen_count를 1 올리고 wstart 상태로 돌아간다. |
@@ -41,7 +41,7 @@ write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_
 
 |State|Description|
 |-----|------|
-| bidle | 마찬가지로 idle이라기보다는 init에 더 가깝다. bresp를 디폴트값인 0으로 세팅해놓고 bdetect_last로 넘어간다. |
+| bidle | 마찬가지로 idle이라기보다는 init에 더 가깝다. <br>bresp를 디폴트값인 0으로 세팅해놓고 bdetect_last로 넘어간다. |
 | bdetect_last| wlast가 1이 될 때까지 기다린다. wlast가 1이 되면 bstart로 넘어간다. |
 | bstart | 실제로 데이터를 잘 받았는지 체크한다. 원래 bresp에는 EXAOKAY도 있는데, <br>05_AXI_dut.v에서는 그걸 빼고 3가지만 구현해놨다.<br>(1)okay(00): 아무 문제 없음<br>(2)slverr(10): slave까지 전송은 잘 됐으나 slave 내부에서 모종의 이유로 에러가 생김.<br>05_AXI_dut.v의 경우에는 burst를 1,2,4번 중 골라야 하는데,<br>AWSIZE가 3보다 크면 선택 범위를 넘어가 이 에러가 뜬다.<br>(3) decerr(11): addr가 mem이 가진 주소보다 클 때 발생하는 에러|
 | bwait |master가 잘 받았는지 bvalid 신호를 확인하다가 HIGH가 되면 다음 cycle에 bidle로 넘어간다.|
@@ -52,7 +52,7 @@ write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_
 |-----|------|
 | aridle | arready를 LOW로 낮추고 기다린다. 바로 다음 사이클에 arstart로 넘어간다.<br>즉 이 상태는 idle이라기보다는 init에 더 가깝다. |
 | arstart| master가 arvalid를 HIGH로 바꾸고 대기중인 상태라면 addr을 받는다. |
-| arreadys | arready를 HIGH로 올리고 다음 clk posedge에 idle로 돌아간다. <br>사실 원래 ready가 먼저 HIGH로 올라가고 그것이 Trigger가 돼서 addr을 받아야 하는데,<br>이 코드에서는 순서가 바뀌어 있다.|
+| arreadys | arready를 HIGH로 올리고 다음 clk posedge에 idle로 돌아간다. |
 
 - **read**<br>
 write 채널을 위해서 이 코드에는 read_data_fixed, read_data_incr, read_data_wrap이라는 function 3개가 있다.
@@ -60,10 +60,10 @@ write 채널을 위해서 이 코드에는 read_data_fixed, read_data_incr, read
 
 |State|Description|
 |-----|------|
-| ridle |  |
-| rstart|  |
-| rwait | |
-|rvalids||
-|rerror||
+| ridle | read의 경우에는 정말 idle 상태이다. arvalid가 HIGH가 되어야 rstart로 넘어간다.  |
+| rstart| rvalid를 HIGH로 올리고 위에서 설명한 함수를 통해 mem에서 데이터를 읽어온다.<br>read는 따로 response 채널이 없기 때문에 이 상태에서 resp도 정한다.<br>디폴트는 00(okay)이고 write의 경우와 마찬가지로 burst 횟수가 4를 초과하면 10,<br>없는 주소에 대해 read를 요청하면 11이 rresp 값이 된다.<br>이렇게 에러가 생기면 rerror로 이동한다. 아니라면<br> rwait으로 이동한다. |
+| rwait | len_count와 rlast를 업데이트한다. 만약 전송이 끝났다면 rlast를 HIGH로 바꾼다.<br>rready가 HIGH가 될 때까지, 즉 master로부터 잘 받았다는 신호가 올 때까지 기다린다. <br>신호를 확인하면 rvalids로 간다. |
+|rvalids| 한 사이클 후에 ridle 또는 rstart로 이동시킨다. |
+|rerror| rerror 상태가 존재하는 이유는 애초에 read를 못 했으니 master로부터의 rready를 기다릴 필요가 없기 때문이다.<br> 바로 rstart로 가서 다음 전송을 시작하거나 전송이 끝났으면 ridle로 이동한다. |
 
 ## 2. 05_AXI_tb.sv
