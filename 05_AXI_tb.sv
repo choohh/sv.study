@@ -198,8 +198,8 @@ class driver;
       vif.awaddr  <= tr.awaddr;
       vif.wdata  <= $urandom_range(1,100);
       
-      @(posedge vif.wready);
-      @(posedge vif.clk);
+    @(posedge vif.wready); //wait for posedge wready
+    @(posedge vif.clk); //wait for posedge clk
     
     
     for(int i = 1; i< len ; i++) begin /// 1 2 3 4 5 6 7
