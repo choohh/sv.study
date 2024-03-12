@@ -46,15 +46,17 @@ write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_
 | bstart | 실제로 데이터를 잘 받았는지 체크한다. 원래 bresp에는 EXAOKAY도 있는데, <br>05_AXI_dut.v에서는 그걸 빼고 3가지만 구현해놨다.<br>(1)okay(00): 아무 문제 없음<br>(2)slverr(10): slave까지 전송은 잘 됐으나 slave 내부에서 모종의 이유로 에러가 생김.<br>05_AXI_dut.v의 경우에는 burst를 1,2,4번 중 골라야 하는데,<br>AWSIZE가 3보다 크면 선택 범위를 넘어가 이 에러가 뜬다.<br>(3) decerr(11): addr가 mem이 가진 주소보다 클 때 발생하는 에러|
 | bwait |master가 잘 받았는지 bvalid 신호를 확인하다가 HIGH가 되면 다음 cycle에 bidle로 넘어간다.|
 
-- **read**
+- **read request**
 
 |State|Description|
 |-----|------|
-| aridle |  |
-| arstart|  |
-| arreadys | |
+| aridle | arready를 LOW로 낮추고 기다린다. 바로 다음 사이클에 arstart로 넘어간다.<br>즉 이 상태는 idle이라기보다는 init에 더 가깝다. |
+| arstart| master가 arvalid를 HIGH로 바꾸고 대기중인 상태라면 addr을 받는다. |
+| arreadys | arready를 HIGH로 올리고 다음 clk posedge에 idle로 돌아간다. <br>사실 원래 ready가 먼저 HIGH로 올라가고 그것이 Trigger가 돼서 addr을 받아야 하는데,<br>이 코드에서는 순서가 바뀌어 있다.|
 
-- **read response**
+- **read**<br>
+write 채널을 위해서 이 코드에는 read_data_fixed, read_data_incr, read_data_wrap이라는 function 3개가 있다.
+<br>이는 burst 옵션에 따라 next addr.이 무엇이 될지 리턴해주는 함수로, rstart 상태에서 사용된다.
 
 |State|Description|
 |-----|------|
