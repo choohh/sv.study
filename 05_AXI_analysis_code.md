@@ -41,10 +41,10 @@ write 채널을 위해서 이 코드에는 data_wr_fixed, data_wr_incr, data_wr_
 
 |State|Description|
 |-----|------|
-| bidle |  |
-| bdetect_last|  |
-| bstart | |
-| bwait ||
+| bidle | 마찬가지로 idle이라기보다는 init에 더 가깝다. bresp를 디폴트값인 0으로 세팅해놓고 bdetect_last로 넘어간다. |
+| bdetect_last| wlast가 1이 될 때까지 기다린다. wlast가 1이 되면 bstart로 넘어간다. |
+| bstart | 실제로 데이터를 잘 받았는지 체크한다. 원래 bresp에는 EXAOKAY도 있는데, <br>05_AXI_dut.v에서는 그걸 빼고 3가지만 구현해놨다.<br>(1)okay(00): 아무 문제 없음<br>(2)slverr(10): slave까지 전송은 잘 됐으나 slave 내부에서 모종의 이유로 에러가 생김.<br>05_AXI_dut.v의 경우에는 burst를 1,2,4번 중 골라야 하는데,<br>AWSIZE가 3보다 크면 선택 범위를 넘어가 이 에러가 뜬다.<br>(3) decerr(11): addr가 mem이 가진 주소보다 클 때 발생하는 에러|
+| bwait |master가 잘 받았는지 bvalid 신호를 확인하다가 HIGH가 되면 다음 cycle에 bidle로 넘어간다.|
 
 - **read**
 
