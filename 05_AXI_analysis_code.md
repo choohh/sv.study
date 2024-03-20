@@ -89,3 +89,11 @@ tb 코드의 구성은 대강 아래와 같다.
 <br> │   └── task run()
 <br> └──class scoreboard
 <br>     └── task run()
+<br>
+<br>구조는 앞에서 살펴본 TB 코드들과 같다. transaction은 signal을 모아놓은 하나의 자료형이고,
+<br>module tb에서 fork-join any를 통해 gen, drv, mon, sco의 run을 동시에 실행시킨다.
+<br>이 4개의 class들은 mailbox를 통해 transaction의 인스턴스를 주고받고,
+<br>event를 통해 task가 끝났는지 여부를 공유한다.
+<br>AXI 코드에서 새롭게 등장해 살펴볼 부분은 drv.run()을 구성하는 다양한 하위 task가 등장했다는 것이다.
+
+### 2-2. Tasks for AXI verification
