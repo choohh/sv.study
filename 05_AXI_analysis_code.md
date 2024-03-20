@@ -67,3 +67,25 @@ write 채널을 위해서 이 코드에는 read_data_fixed, read_data_incr, read
 |rerror| rerror 상태가 존재하는 이유는 애초에 read를 못 했으니 master로부터의 rready를 기다릴 필요가 없기 때문이다.<br> 바로 rstart로 가서 다음 전송을 시작하거나 전송이 끝났으면 ridle로 이동한다. |
 
 ## 2. 05_AXI_tb.sv
+
+### 2-1. 개요
+tb 코드의 구성은 대강 아래와 같다.
+<br>모든 구성요소를 다 표시한 것은 아니지만, 아래 트리의 class/task를 다 이해하면 tb를 거의 다 이해한 것이다.
+<br>
+<br>**module tb**
+<br> ├── class transaction
+<br> ├── class generator
+<br> │   └── task run() 
+<br> ├──class driver
+<br> │   └── task run()
+<br> │      ├── task reset()
+<br> │      ├── task fixed_write()
+<br> │      ├── task incr_write()
+<br> │      ├── task wrap_write()
+<br> │      ├── task fixed_read()
+<br> │      ├── task incr_read()
+<br> │      └── task wrap_read()
+<br> ├──class monitor
+<br> │   └── task run()
+<br> └──class scoreboard
+<br>     └── task run()
